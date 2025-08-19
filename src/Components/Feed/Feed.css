@@ -1,27 +1,73 @@
-.feed{
+/* 🔲 Grid Layout */
+.feed {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-column-gap: 16px;
-    grid-row-gap: 30px;
+    gap: 30px 16px;
     margin-top: 15px;
-}
-.card img{
-    width: 100%;
-    border-radius: 5px;
-}
-.card h2{
-    font-size: 16px;
+  }
+  
+  /* 🧩 Card Styling */
+  .card {
+    transition: transform 0.2s ease;
+  }
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .card h2 {
+    font-size: clamp(1rem, 2vw, 1.25rem);
     font-weight: 600;
     color: #000;
     margin: 5px 0;
-}
-.card h3{
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .card h3,
+  .card p {
     font-size: 14px;
     font-weight: 600;
     color: #555;
     margin: 6px 0;
-}
-.card p{
-    font-size: 14px;
-}
-
+  }
+  
+  /* 🎥 Thumbnail + Hover Preview */
+  .thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  
+  .static-thumb,
+  .hover-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* 🎬 Default States */
+  .static-thumb {
+    opacity: 1;
+  }
+  .hover-preview {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* 🖱️ Hover Logic (Desktop Only) */
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover .hover-preview {
+      opacity: 1;
+    }
+    .card:hover .static-thumb {
+      opacity: 0;
+    }
+  }
+  
