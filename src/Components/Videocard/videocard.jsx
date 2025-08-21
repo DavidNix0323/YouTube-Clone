@@ -20,6 +20,7 @@ const VideoCard = ({ item }) => {
     }
     return () => clearTimeout(timer);
   }, [isHovered]);
+  
 
   const handlePreviewToggle = () => {
     setIsHovered((prev) => !prev);
@@ -47,15 +48,22 @@ const VideoCard = ({ item }) => {
     <div className="skeleton-thumb w-full h-[180px] md:h-[240px] bg-gray-300 animate-pulse rounded-md" />
   )}
 
-  {showIframe && (
+{showIframe && (
+  <>
+    {isLoading && (
+      <div className="skeleton-thumb w-full h-[180px] md:h-[240px] bg-gray-300 animate-pulse rounded-md absolute top-0 left-0 z-10" />
+    )}
     <iframe
       className="hover-preview w-full h-[180px] md:h-[240px] rounded-md overflow-hidden"
       src={`https://www.youtube.com/embed/${item.id}?autoplay=1&mute=1&controls=0`}
       frameBorder="0"
       allow="autoplay"
       sandbox="allow-scripts allow-same-origin"
+      onLoad={() => setIsLoading(false)}
     />
-  )}
+  </>
+)}
+
 </div>
 
       <h2>{title}</h2>

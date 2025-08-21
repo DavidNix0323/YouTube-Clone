@@ -32,7 +32,16 @@ const App = () => {
 />
 
       <Routes>
-      <Route
+        <Route
+  path="/"
+  element={
+    <Home
+      sidebar={sidebar}
+      searchTerm={searchTerm}
+      setRenderedVideos={setRenderedVideos}
+    />
+  }
+/><Route
   path="/"
   element={
     <Home
@@ -42,6 +51,17 @@ const App = () => {
     />
   }
 />
+
+<Route
+  path="/video/:categoryId/:videoId"
+  element={
+    <Video
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+    />
+  }
+/>
+
 
         <Route path="/video/:categoryId/:videoId" element={<Video />} />
         {/* Optional: <Route path="/search/:query" element={<SearchResults />} /> */}

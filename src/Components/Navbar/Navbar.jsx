@@ -17,10 +17,10 @@ const Navbar = ({ setSidebar, searchTerm, setSearchTerm, theme, toggleTheme }) =
   };
 
   const handleSearch = () => {
-    if (searchTerm.trim()) {
-      navigate(`/search/${searchTerm}`);
-    }
+    // Just trigger local filtering—no navigation
+    console.log("Search triggered:", searchTerm);
   };
+  
 
   return (
     <nav className="flex-div">

@@ -1,4 +1,3 @@
-// SkeletonCard.jsx
 import React from "react";
 import "./SkeletonCard.css";
 
