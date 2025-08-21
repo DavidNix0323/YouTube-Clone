@@ -135,3 +135,52 @@
         margin-top: 15px;
     }
 }
+/* Dark mode for video playback section */
+body.dark .play-video h3 {
+    color: #e0e0e0;
+  }
+  
+  body.dark .play-video .play-video-info {
+    color: #bbb;
+  }
+  
+  body.dark .play-video hr {
+    background: #444;
+  }
+  
+  /* Publisher section */
+  body.dark .publisher div p {
+    color: #fff;
+  }
+  
+  body.dark .publisher div span {
+    color: #aaa;
+  }
+  
+  body.dark .publisher button {
+    background: #cc0000;
+    color: #fff;
+  }
+  
+  /* Description */
+  body.dark .vid-description p,
+  body.dark .vid-description h4 {
+    color: #ccc;
+  }
+  
+  /* Comments */
+  body.dark .comment h3 {
+    color: #eee;
+  }
+  
+  body.dark .comment h3 span,
+  body.dark .comment .comment-action span {
+    color: #aaa;
+  }
+  body.dark .vid-description,
+  body.dark .comment {
+    background-color: #1a1a1a;
+    border-radius: 6px;
+    padding: 10px;
+  }
+    

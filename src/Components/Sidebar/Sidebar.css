@@ -64,4 +64,40 @@
     .sidebar{
         display: none;
     }
-}
+}/* 🌙 Sidebar Container */
+body.dark .sidebar {
+    background-color: #1a1a1a;
+    color: #ccc;
+  }
+  
+  /* 🔗 Shortcut Links */
+  body.dark .side-link {
+    color: #ddd;
+  }
+  
+  body.dark .side-link img {
+    filter: brightness(0.8);
+  }
+  
+  body.dark .side-link.active img {
+    border-bottom: 3px solid #ed3833;
+  }
+  
+  body.dark .shortcut-links .active {
+    color: #ed3833;
+  }
+  
+  /* 📜 Divider */
+  body.dark .sidebar hr {
+    background: #444;
+  }
+  
+  /* 🧑‍🤝‍🧑 Subscribed Section */
+  body.dark .subscribed-list h3 {
+    color: #aaa;
+  }
+  
+  body.dark .subscribed-list .side-link p {
+    color: #ccc;
+  }
+  

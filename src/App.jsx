@@ -1,18 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
-import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Video from "./Pages/Video/Video";
 
 const App = () => {
   const [sidebar, setSidebar] = useState(true);
-  
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
   return (
     <div>
-      <Navbar setSidebar={setSidebar} />
+      <Navbar
+        setSidebar={setSidebar}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
       <Routes>
-        <Route path="/" element={<Home  sidebar={sidebar} />} />
+        <Route path="/" element={<Home sidebar={sidebar} searchTerm={searchTerm} />} />
         <Route path="/video/:categoryId/:videoId" element={<Video />} />
+        {/* Optional: <Route path="/search/:query" element={<SearchResults />} /> */}
       </Routes>
     </div>
   );

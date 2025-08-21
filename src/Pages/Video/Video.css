@@ -18,3 +18,25 @@
   }
   
   }
+  /* 🧱 Container Background */
+body.dark .container {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Optional: Large Container Variant */
+body.dark .large-container {
+  background-color: #121212;
+}
+
+/* Smooth transitions */
+.container,
+.large-container {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* 🌒 Dark Mode for Play Container */
+body.dark .play-container {
+  background-color: #121212;
+  color: #e0e0e0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
