@@ -70,4 +70,35 @@
       opacity: 0;
     }
   }
-  
+  /* 🔲 Grid Container */
+body.dark .feed {
+  background-color: #121212;
+}
+
+/* 🧩 Card Styling */
+body.dark .card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+}
+
+/* Headline and metadata */
+body.dark .card h2 {
+  color: #e0e0e0;
+}
+
+body.dark .card h3,
+body.dark .card p {
+  color: #bbb;
+}
+
+/* 🎥 Thumbnail wrapper stays neutral */
+body.dark .thumbnail-wrapper {
+  background-color: #000;
+}
+
+/* Optional: subtle hover glow */
+body.dark .card:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}

@@ -1,63 +1,182 @@
-nav{
-    padding: 10px 2%;
+/* === NAVIGATION BAR === */
+nav {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px 2%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background: #fff;
     position: sticky;
     top: 0;
     z-index: 10;
-}
-.nav-right img{
-    width: 25px;
-    margin-right: 25px;
-}
-.nav-right .user-icon{
-    width: 35px;
-    border-radius: 50%;
-    margin-right: 0;
-}
-.nav-left .menu-icon{
+  }
+  
+  /* === NAV LEFT === */
+  .nav-left .menu-icon {
     width: 22px;
     margin-right: 25px;
-}
-.nav-left .logo{
+  }
+  
+  .nav-left .logo {
     width: 130px;
-}
-.nav-middle .search-box{
+    filter: invert(0);
+    transition: filter 0.3s ease;
+  }
+  
+  body.dark .nav-left .logo {
+    filter: invert(1);
+  }
+  
+  /* === NAV MIDDLE === */
+  .nav-middle .search-box {
+    display: flex;
+    align-items: center;
     border: 1px solid #ccc;
     margin-right: 15px;
     padding: 8px 12px;
     border-radius: 25px;
-}
-.nav-middle .search-box input{
+    transition: border-color 0.3s ease;
+  }
+  
+  .nav-middle .search-box input {
     width: 400px;
     border: 0;
     outline: 0;
     background: transparent;
-}
-.nav-middle .search-box  img{
+    color: inherit;
+  }
+  
+  .nav-middle .search-box img {
     width: 15px;
-}
-
-@media (max-width: 900px){
-    .menu-icon{
-        display: none;
+  }
+  
+  /* === NAV RIGHT === */
+  .nav-right img {
+    width: 25px;
+    margin-right: 25px;
+  }
+  
+  .nav-right .user-icon {
+    width: 35px;
+    border-radius: 50%;
+    margin-right: 0;
+  }
+  
+  /* === SEARCH BUTTON === */
+  .search-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .search-btn:hover {
+    background-color: #e2e2e2;
+  }
+  
+  .search-btn:focus {
+    outline: 2px solid #888;
+    outline-offset: 2px;
+  }
+  
+  body.dark .search-btn:hover {
+    background-color: #444;
+  }
+  
+  body.dark .search-btn:focus {
+    outline: 2px solid #ccc;
+  }
+  
+  /* === THEME TOGGLE BUTTON === */
+  .theme-toggle {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border: 1px solid #ccc;
+  }
+  
+  /* LIGHT MODE DEFAULT */
+  body:not(.dark) .theme-toggle {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* LIGHT MODE HOVER */
+  body:not(.dark) .theme-toggle:hover {
+    background-color: #ccc;
+    color: #000;
+  }
+  
+  /* DARK MODE DEFAULT */
+  body.dark .theme-toggle {
+    background-color: #000;
+    color: #fff;
+    border-color: #666;
+  }
+  
+  /* DARK MODE HOVER */
+  body.dark .theme-toggle:hover {
+    background-color: #088F8F; 
+    color: #fff;
+    border-color: #f00;
+  }
+  
+  
+  /* === DARK MODE === */
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  body.dark {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  body.dark nav {
+    background: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  
+  body.dark .search-box {
+    border-color: #555;
+  }
+  
+  body.dark .search-box input {
+    color: #fff;
+  }
+  
+  
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    .menu-icon {
+      display: none;
     }
-    .nav-right img{
-        display: none;
+  
+    .nav-right img {
+      display: none;
     }
-    .nav-right .user-icon{
-        display: block;
-        width: 30px;
+  
+    .nav-right .user-icon {
+      display: block;
+      width: 30px;
     }
-    .logo{
-        width: 90px;
+  
+    .logo {
+      width: 90px;
     }
-    .nav-middle .mic-icon{
-        display: none;
+  
+    .nav-middle .mic-icon {
+      display: none;
     }
-    .nav-middle .search-box input{
-        width: 100px;
-     }
-    
-}
+  
+    .nav-middle .search-box input {
+      width: 100px;
+    }
+  }
+  
