@@ -8,6 +8,8 @@ const App = () => {
   const [sidebar, setSidebar] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [searchTerm, setSearchTerm] = useState("");
+  const [renderedVideos, setRenderedVideos] = useState([]);
+
 
   useEffect(() => {
     document.body.classList.toggle("dark", theme === "dark");
@@ -21,14 +23,26 @@ const App = () => {
   return (
     <div>
       <Navbar
-        setSidebar={setSidebar}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        theme={theme}
-        toggleTheme={toggleTheme}
-      />
+  setSidebar={setSidebar}
+  searchTerm={searchTerm}
+  setSearchTerm={setSearchTerm}
+  theme={theme}
+  toggleTheme={toggleTheme}
+  renderedVideos={renderedVideos}
+/>
+
       <Routes>
-        <Route path="/" element={<Home sidebar={sidebar} searchTerm={searchTerm} />} />
+      <Route
+  path="/"
+  element={
+    <Home
+      sidebar={sidebar}
+      searchTerm={searchTerm}
+      setRenderedVideos={setRenderedVideos}
+    />
+  }
+/>
+
         <Route path="/video/:categoryId/:videoId" element={<Video />} />
         {/* Optional: <Route path="/search/:query" element={<SearchResults />} /> */}
       </Routes>
