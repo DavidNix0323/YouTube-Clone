@@ -16,3 +16,66 @@ img{
   display: flex;
   align-items: center;
 }
+body {
+  background-color: #ffffff;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.theme-toggle {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: #e2e2e2;
+  color: #000;
+  cursor: pointer;
+  border: none;
+  margin-left: auto;
+}
+
+body.dark .theme-toggle {
+  background-color: #333;
+  color: #fff;
+}
+/* Global dark mode styles */
+body.dark {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+/* Example: video cards, titles, etc. */
+body.dark .video-card {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+body.dark .video-card h3,
+body.dark .video-card p {
+  color: #e0e0e0;
+}
+
+/* Sidebar or menu */
+body.dark .sidebar {
+  background-color: #1a1a1a;
+  color: #ccc;
+}
+
+/* Buttons and icons */
+body.dark .btn,
+body.dark .icon {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+/* Search box */
+body.dark .search-box {
+  border-color: #555;
+}
+
+body.dark .search-box input {
+  color: #fff;
+}

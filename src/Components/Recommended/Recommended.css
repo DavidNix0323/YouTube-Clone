@@ -33,4 +33,29 @@
         flex-basis: 100%;
     }
    
-}
+}/* 🔲 Sidebar Container */
+body.dark .recommended {
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  /* 🧩 Video Info Text */
+  body.dark .side-video-list .vid-info h4,
+  body.dark .recommended p,
+  body.dark .recommended .recommended-views {
+    color: #ccc;
+  }
+  
+  /* 🖼️ Thumbnail Wrapper */
+  body.dark .side-video-list img {
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Optional: hover glow */
+  body.dark .side-video-list:hover {
+    background-color: #2a2a2a;
+    border-radius: 6px;
+  }
+  
