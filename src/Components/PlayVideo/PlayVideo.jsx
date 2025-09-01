@@ -4,23 +4,42 @@ import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
 import share from '../../assets/share.png';
 import save from '../../assets/save.png';
-import { API_KEY, value_converter } from '../../data';
+import { value_converter } from '../../data';
 import VideoSkeleton from '../VideoSkeleton/VideoSkeleton';
 import moment from 'moment';
+
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
 const PlayVideo = ({ videoId, searchTerm }) => {
   const [apiData, setApiData] = useState(null);
   const [channelData, setChannelData] = useState(null);
   const [commentData, setCommentData] = useState([]);
   const [relatedVideos, setRelatedVideos] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchVideoData = async () => {
-      const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${API_KEY}`;
-      const res = await fetch(videoDetails_url);
-      const data = await res.json();
-      setApiData(data.items?.[0] || null);
-      window.scrollTo(0, 0);
+      if (!videoId || typeof videoId !== 'string' || videoId.length !== 11) {
+        setError('Invalid video ID');
+        return;
+      }
+
+      try {
+        const url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${API_KEY}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!res.ok || !data.items || data.items.length === 0) {
+          setError('Video not found or API rejected the request');
+          return;
+        }
+
+        setApiData(data.items[0]);
+        window.scrollTo(0, 0);
+      } catch (err) {
+        console.error('Video fetch error:', err);
+        setError('Network error');
+      }
     };
 
     fetchVideoData();
@@ -29,28 +48,24 @@ const PlayVideo = ({ videoId, searchTerm }) => {
   useEffect(() => {
     const fetchOtherData = async () => {
       if (!apiData?.snippet?.channelId) return;
-      if (!videoId || typeof videoId !== 'string' || videoId.length !== 11) {
-        console.warn('Invalid videoId for related fetch:', videoId);
-        return;
-      }
 
       try {
-        const channelLogo_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
-        const channelRes = await fetch(channelLogo_url);
-        const channelData = await channelRes.json();
-        setChannelData(channelData.items?.[0] || null);
+        const channelURL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
+        const channelRes = await fetch(channelURL);
+        const channelJson = await channelRes.json();
+        setChannelData(channelJson.items?.[0] || null);
 
-        const videoComment_url = `https://www.googleapis.com/youtube/v3/commentThreads?textFormat=plainText&part=snippet&maxResults=50&videoId=${videoId}&key=${API_KEY}`;
-        const commentRes = await fetch(videoComment_url);
-        const commentData = await commentRes.json();
-        setCommentData(commentData.items?.filter(item => item?.snippet?.topLevelComment?.snippet) || []);
+        const commentURL = `https://youtube.googleapis.com/youtube/v3/commentThreads?textFormat=plainText&part=snippet&maxResults=50&videoId=${videoId}&key=${API_KEY}`;
+        const commentRes = await fetch(commentURL);
+        const commentJson = await commentRes.json();
+        setCommentData(commentJson.items?.filter(item => item?.snippet?.topLevelComment?.snippet) || []);
 
-        const related_url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=20&key=${API_KEY}`;
-        const relatedRes = await fetch(related_url);
-        const relatedData = await relatedRes.json();
-        setRelatedVideos(relatedData.items || []);
+        const relatedURL = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=20&key=${API_KEY}`;
+        const relatedRes = await fetch(relatedURL);
+        const relatedJson = await relatedRes.json();
+        setRelatedVideos(relatedJson.items || []);
       } catch (err) {
-        console.error('Error fetching additional video data:', err);
+        console.error('Additional data fetch error:', err);
       }
     };
 
@@ -58,13 +73,13 @@ const PlayVideo = ({ videoId, searchTerm }) => {
   }, [apiData]);
 
   const filteredSuggestions = useMemo(() => {
-    if (typeof searchTerm !== 'string' || !searchTerm.trim()) return [];
-    if (!Array.isArray(relatedVideos)) return [];
+    if (!searchTerm?.trim() || !Array.isArray(relatedVideos)) return [];
     return relatedVideos.filter(video =>
       video.snippet?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, relatedVideos]);
 
+  if (error) return <p className="error">{error}</p>;
   if (!apiData) return <VideoSkeleton />;
 
   return (
@@ -85,22 +100,10 @@ const PlayVideo = ({ videoId, searchTerm }) => {
           {moment(apiData.snippet.publishedAt).fromNow()}
         </p>
         <div>
-          <span>
-            <img src={like} alt="like" />
-            {value_converter(apiData.statistics.likeCount)}
-          </span>
-          <span>
-            <img src={dislike} alt="dislike" />
-            2
-          </span>
-          <span>
-            <img src={share} alt="share" />
-            Share
-          </span>
-          <span>
-            <img src={save} alt="save" />
-            Save
-          </span>
+          <span><img src={like} alt="like" />{value_converter(apiData.statistics.likeCount)}</span>
+          <span><img src={dislike} alt="dislike" />2</span>
+          <span><img src={share} alt="share" />Share</span>
+          <span><img src={save} alt="save" />Save</span>
         </div>
       </div>
 
@@ -116,8 +119,7 @@ const PlayVideo = ({ videoId, searchTerm }) => {
           <span>
             {channelData
               ? value_converter(channelData.statistics.subscriberCount)
-              : '1M'}{' '}
-            Subscribers
+              : '1M'} Subscribers
           </span>
         </div>
         <button type="button">Subscribe</button>
@@ -130,11 +132,9 @@ const PlayVideo = ({ videoId, searchTerm }) => {
             <p>No matches for "{searchTerm}"</p>
           ) : (
             filteredSuggestions.map(video => {
-              const vidId = (() => {
-                if (typeof video.id === 'string') return video.id;
-                if (typeof video.id === 'object' && typeof video.id.videoId === 'string') return video.id.videoId;
-                return null;
-              })();
+              const vidId = typeof video.id === 'string'
+                ? video.id
+                : video.id?.videoId || null;
 
               if (!vidId) return null;
 
