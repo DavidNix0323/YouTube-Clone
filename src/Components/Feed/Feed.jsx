@@ -2,32 +2,51 @@ import React, { useEffect, useState } from "react";
 import "./Feed.css";
 import { API_KEY } from "../../data";
 import VideoCard from "../Videocard/videocard";
-import SkeletonCard from "../SkeletonCard/SkeletonCard"; // ✅ import your skeleton
+import SkeletonCard from "../SkeletonCard/SkeletonCard";
 
 const Feed = ({ category, searchTerm, setRenderedVideos }) => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // ✅ define loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
-    setIsLoading(true); // start loading
+    setIsLoading(true);
 
-    const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${category}&key=${API_KEY}`;
-    const response = await fetch(videoList_url);
-    const result = await response.json();
-    const items = result.items || [];
+    const baseURL = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=50&regionCode=US`;
+    const categoryParam =
+      category && category !== "0" ? `&videoCategoryId=${category}` : "";
+    const videoList_url = `${baseURL}${categoryParam}&key=${API_KEY}`;
 
-    const filteredItems = searchTerm
-      ? items.filter((item) =>
-          item.snippet?.title?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      : items;
+    try {
+      const response = await fetch(videoList_url);
+      const result = await response.json();
 
-    setData(filteredItems);
-    setRenderedVideos(
-      filteredItems.map((item) => item.snippet?.title).filter(Boolean)
-    );
+      if (!response.ok || !result.items) {
+        console.error("YouTube API error:", result);
+        setData([]);
+        setRenderedVideos([]);
+        setIsLoading(false);
+        return;
+      }
 
-    setIsLoading(false); // done loading
+      const filteredItems = searchTerm
+        ? result.items.filter((item) =>
+            item.snippet?.title
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          )
+        : result.items;
+
+      setData(filteredItems);
+      setRenderedVideos(
+        filteredItems.map((item) => item.snippet?.title).filter(Boolean)
+      );
+    } catch (err) {
+      console.error("Fetch failed:", err);
+      setData([]);
+      setRenderedVideos([]);
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -39,7 +58,11 @@ const Feed = ({ category, searchTerm, setRenderedVideos }) => {
       {isLoading ? (
         Array.from({ length: 12 }).map((_, i) => <SkeletonCard key={i} />)
       ) : data.length === 0 ? (
-        <p>{searchTerm ? `No results for "${searchTerm}"` : "No videos available."}</p>
+        <p>
+          {searchTerm
+            ? `No results for "${searchTerm}"`
+            : "No videos available."}
+        </p>
       ) : (
         data.map((item) => <VideoCard key={item.id} item={item} />)
       )}
